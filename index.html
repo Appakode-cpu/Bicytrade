@@ -337,20 +337,7 @@
 
     <footer>
         <p>&copy; 2026 AppaKode. BicyTrade procesa los cálculos de forma local.</p>
-       
-        <div class="stat-badge">
-    Visitas totales: <span id="visit-count">Cargando...</span>
-</div>
 
-<script>
-    fetch('https://api.counterapi.dev/v1/TU_NOMBRE_DE_CONTADOR/bicytrade_visits/up')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('visit-count').innerText = data.count;
-        });
-</script>
-
-        
             </div>
         </div>
     </footer>
