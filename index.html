@@ -337,12 +337,20 @@
 
     <footer>
         <p>&copy; 2026 AppaKode. BicyTrade procesa los cálculos de forma local.</p>
-        
-        <div class="stats-container">
-            <div class="stat-badge">
-                <span>Visitas totales: </span>
-                <<img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2FAppaKode.github.io%2Fbicytrade&count_bg=%23FFC107&title_bg=%231E1E1E&title=Traders&edge_flat=false" alt="Contador de Visitas">
+       
+        <div class="stat-badge">
+    Visitas totales: <span id="visit-count">Cargando...</span>
+</div>
 
+<script>
+    fetch('https://api.counterapi.dev/v1/TU_NOMBRE_DE_CONTADOR/bicytrade_visits/up')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('visit-count').innerText = data.count;
+        });
+</script>
+
+        
             </div>
         </div>
     </footer>
