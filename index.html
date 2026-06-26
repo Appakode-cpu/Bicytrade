@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BicyTrade - Calculadora P2P y Arbitraje</title>
+    <style>
+        :root {
+            --primary: #FFC107; /* Ámbar KivyMD */
+            --primary-hover: #ffca28;
+            --bg-dark: #121212; /* Tema Dark */
+            --surface-dark: #1E1E1E; /* MDCard Dark */
+            --text-light: #FFFFFF;
+            --text-secondary: #9E9E9E; /* Secondary text color */
+            --success: #00E676; /* Color de margen positivo */
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-light);
+            background-color: var(--bg-dark);
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background-color: var(--surface-dark);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .main-container {
+            margin-top: 80px;
+        }
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .hero-text h1 {
+            font-size: 46px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: var(--text-light);
+        }
+
+        .hero-text span {
+            color: var(--primary);
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 280px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 193, 7, 0.15);
+            border: 1px solid #333;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: #000;
+            padding: 14px 35px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+        }
+
+        .features {
+            background-color: var(--surface-dark);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-size: 32px;
+            margin-bottom: 40px;
+            color: var(--text-light);
+        }
+
+        .features-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-dark);
+            padding: 30px;
+            border-radius: 15px;
+            width: 300px;
+            border: 1px solid #333;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .feature-card h3 {
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .donations {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .donation-box {
+            background: var(--surface-dark);
+            max-width: 550px;
+            margin: 0 auto;
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+
+        .donation-box p {
+            color: var(--text-secondary);
+        }
+
+        .crypto-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--success);
+        }
+
+        .network-badge {
+            display: inline-block;
+            background-color: #333;
+            color: var(--text-light);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border: 1px solid var(--primary);
+        }
+
+        .address-container {
+            display: flex;
+            align-items: center;
+            background: var(--bg-dark);
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid #444;
+            margin-bottom: 15px;
+        }
+
+        .address-text {
+            font-family: monospace;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            text-align: left;
+            color: var(--primary);
+        }
+
+        .btn-copy {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.2s;
+            margin-left: 10px;
+        }
+
+        .btn-copy:hover {
+            background: var(--primary-hover);
+        }
+
+        .copy-status {
+            font-size: 13px;
+            color: var(--success);
+            height: 18px;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        footer {
+            background-color: #0a0a0a;
+            color: var(--text-secondary);
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+
+        .stats-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: rgba(255, 193, 7, 0.1);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--primary);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .stat-badge img {
+            vertical-align: middle;
+            margin-top: -2px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">BicyTrade</a>
+        <a href="#download" class="btn" style="padding: 10px 25px; font-size: 14px;">Descargar APK</a>
+    </header>
+
+    <div class="main-container">
+        <section class="hero">
+            <div class="hero-text">
+                <h1>Calcula tus arbitrajes P2P con <span>precisión absoluta</span></h1>
+                <p>Simula flujos de capital, deduce comisiones bancarias y de exchange, y archiva tus métricas financieras de forma completamente local.</p>
+                <a href="https://github.com/TU-USUARIO/bicytrade/releases" id="download-btn" class="btn" target="_blank">
+                    Descargar App (Android)
+                </a>
+            </div>
+            <div class="hero-image">
+                <img src="https://via.placeholder.com/280x550/1E1E1E/FFC107?text=BicyTrade+Dark+Mode" alt="BicyTrade App Interface">
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>Herramientas para Traders</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Simulador Directo e Inverso</h3>
+                    <p>Calcula márgenes netos ingresando tu capital en USDT o definiendo una meta exacta en USD Fiat.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Gestión de Perfiles</h3>
+                    <p>Guarda diferentes estructuras de comisiones (Banco, Psp, Exchange) para cargar tus cálculos rápidamente.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Exportación Contable</h3>
+                    <p>Visualiza tu ganancia acumulada y exporta todo tu historial operativo a formatos CSV compatibles con Excel.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="donations">
+            <div class="donation-box">
+                <h2>Apoya el Desarrollo</h2>
+                <p>BicyTrade es una herramienta independiente orientada a la privacidad. Si te ayuda a mejorar tus retornos, considera una donación.</p>
+                
+                <div class="crypto-title">USDT (Tether)</div>
+                <div class="network-badge">Red: TRC-20 (Tron)</div>
+                
+                <div class="address-container">
+                    <div class="address-text" id="usdt-address">TMK2DG5kjzdy5gdmY9PJcY6rQ6dcLRjWqG</div>
+                    <button class="btn-copy" onclick="copyAddress()">Copiar</button>
+                </div>
+                <div class="copy-status" id="copy-status"></div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 AppaKode. BicyTrade procesa los cálculos de forma local.</p>
+        
+        <div class="stats-container">
+            <div class="stat-badge">
+                <span>Visitas totales: </span>
+                <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2FTU-USUARIO.github.io%2Fbicytrade&count_bg=%23FFC107&title_bg=%231E1E1E&icon=&icon_color=%23000000&title=Traders&edge_flat=false" alt="Contador de Visitas">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function copyAddress() {
+            const addressText = document.getElementById('usdt-address').innerText;
+            navigator.clipboard.writeText(addressText).then(() => {
+                const status = document.getElementById('copy-status');
+                status.innerText = "¡Dirección copiada!";
+                setTimeout(() => { status.innerText = ""; }, 3000);
+            }).catch(err => {
+                alert("Selecciona y copia manualmente.");
+            });
+        }
+    </script>
+</body>
+</html>
